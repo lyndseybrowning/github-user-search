@@ -1,7 +1,5 @@
 function App() {
-  return (
-    <header>Hello World</header>
-  );
+    return <header>Hello World</header>;
 }
 
 export default App;
