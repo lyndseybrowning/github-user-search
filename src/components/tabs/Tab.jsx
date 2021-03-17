@@ -1,10 +1,16 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import PropTypes from "prop-types";
 
-const Tab = (props) => {
-    return <div>Hey</div>;
-};
+const Tab = forwardRef(({ name, ...props }, ref) => {
+    return (
+        <button role="tab" ref={ref} {...props}>
+            {name}
+        </button>
+    );
+});
 
-Tab.propTypes = {};
+Tab.propTypes = {
+    name: PropTypes.string.isRequired,
+};
 
 export default Tab;
