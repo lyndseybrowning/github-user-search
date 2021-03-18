@@ -12,9 +12,10 @@ const searchReducer = (state, action) => {
         case "resultsFound":
             return {
                 ...state,
+                isLoading: false,
                 users: action.users,
                 repositories: action.repositories,
-                isLoading: false,
+                searchQuery: action.searchQuery,
             };
         case "searchingResults":
             return {
@@ -38,6 +39,7 @@ function App() {
         repositories: null,
         error: null,
         isLoading: false,
+        searchQuery: null,
     });
 
     const handleSearch = async (searchQuery) => {
@@ -53,7 +55,12 @@ function App() {
                     pageSize: RECORDS_PER_PAGE,
                 }),
             ]).then(([users, repositories]) => {
-                dispatch({ type: "resultsFound", users, repositories });
+                dispatch({
+                    type: "resultsFound",
+                    users,
+                    repositories,
+                    searchQuery,
+                });
             });
         } catch (error) {
             dispatch({ type: "error", error });
@@ -75,6 +82,7 @@ function App() {
                     <UsersTab
                         users={state.users}
                         recordsPerPage={RECORDS_PER_PAGE}
+                        searchQuery={state.searchQuery}
                     />
                 </Tab>
                 <Tab name={`Repos ${state.repositories.total_count}`}>

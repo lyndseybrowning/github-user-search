@@ -3,17 +3,24 @@ import PropTypes from "prop-types";
 
 import Pagination from "./pagination";
 
-const PaginatedTabContent = ({ totalRecords, recordsPerPage, children }) => {
-    const [currentPage, setCurrentPage] = useState(1);
+const MAX_TOTAL_RECORDS = 1000;
+
+const PaginatedTabContent = ({
+    totalRecords,
+    recordsPerPage,
+    currentPage,
+    children,
+    onPageChange,
+}) => {
     const [pageSize, setPageSize] = useState(recordsPerPage);
-    const totalPages = Math.floor(totalRecords / recordsPerPage);
+    const maxTotalPages = Math.floor(MAX_TOTAL_RECORDS / recordsPerPage);
 
     const pagination = (
         <Pagination
-            totalPages={totalPages}
+            totalPages={maxTotalPages}
             currentPage={currentPage}
             recordsPerPage={pageSize}
-            onPageChange={setCurrentPage}
+            onPageChange={onPageChange}
             onRecordsPerPageChange={setPageSize}
         />
     );
@@ -31,6 +38,8 @@ PaginatedTabContent.propTypes = {
     children: PropTypes.node.isRequired,
     totalRecords: PropTypes.number.isRequired,
     recordsPerPage: PropTypes.number.isRequired,
+    currentPage: PropTypes.number.isRequired,
+    onPageChange: PropTypes.func.isRequired,
 };
 
 export default PaginatedTabContent;
