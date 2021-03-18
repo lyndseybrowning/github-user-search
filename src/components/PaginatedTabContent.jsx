@@ -13,11 +13,14 @@ const PaginatedTabContent = ({
     onPageChange,
 }) => {
     const [pageSize, setPageSize] = useState(recordsPerPage);
+    const totalPages = Math.floor(totalRecords / recordsPerPage);
     const maxTotalPages = Math.floor(MAX_TOTAL_RECORDS / recordsPerPage);
 
     const pagination = (
         <Pagination
-            totalPages={maxTotalPages}
+            totalPages={
+                totalPages <= maxTotalPages ? totalPages : maxTotalPages
+            }
             currentPage={currentPage}
             recordsPerPage={pageSize}
             onPageChange={onPageChange}
