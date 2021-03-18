@@ -32,7 +32,9 @@ describe("fetchData", () => {
         await fetchData(mockSearchQuery);
 
         expect(window.fetch).toHaveBeenCalledWith(
-            `https://api.github.com/search/users?q=${mockSearchQuery}`,
+            expect.stringContaining(
+                `https://api.github.com/search/users?q=${mockSearchQuery}`,
+            ),
         );
     });
 
@@ -44,7 +46,21 @@ describe("fetchData", () => {
         });
 
         expect(window.fetch).toHaveBeenCalledWith(
-            `https://api.github.com/search/repositories?q=${mockSearchQuery}`,
+            expect.stringContaining(
+                `https://api.github.com/search/repositories?q=${mockSearchQuery}`,
+            ),
+        );
+    });
+
+    it("should add the page size and current page to the querystring", async () => {
+        await fetchData("mock-query", {
+            type: "users",
+            pageSize: 10,
+            currentPage: 1,
+        });
+
+        expect(window.fetch).toHaveBeenCalledWith(
+            "https://api.github.com/search/users?q=mock-query&per_page=10&page=1",
         );
     });
 });
