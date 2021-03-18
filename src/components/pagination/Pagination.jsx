@@ -5,14 +5,21 @@ import createPagination from "./createPagination";
 import RecordsPerPageDropdown from "./RecordsPerPageDropdown";
 import PageButton from "./PageButton";
 
+const MAX_TOTAL_PAGES = 1000;
+
 const Pagination = ({
     recordsPerPage,
-    totalPages,
+    totalPages: totalNumberOfPages,
     currentPage,
     pageRange,
     onPageChange,
     onRecordsPerPageChange,
 }) => {
+    const totalPages =
+        totalNumberOfPages > MAX_TOTAL_PAGES
+            ? MAX_TOTAL_PAGES
+            : totalNumberOfPages;
+
     const pages = createPagination({
         totalPages,
         currentPage,
