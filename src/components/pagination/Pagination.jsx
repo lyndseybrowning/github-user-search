@@ -2,8 +2,8 @@ import React from "react";
 import PropTypes from "prop-types";
 
 import createPagination from "./createPagination";
-import PageButton from "./PageButton";
 import RecordsPerPageDropdown from "./RecordsPerPageDropdown";
+import PageButton from "./PageButton";
 
 const Pagination = ({
     recordsPerPage,
@@ -18,31 +18,72 @@ const Pagination = ({
         range: pageRange,
     });
 
-    const renderPages = () => {
+    const isFirstPage = currentPage === 1;
+    const isLastPage = currentPage === totalPages;
+
+    const handlePageChange = (page) => {
+        if (page === currentPage || page === 0 || page > totalPages) {
+            return;
+        }
+        return onPageChange(page);
+    };
+
+    const renderPageButtons = () => {
         return pages.map((page) => (
-            <PageButton key={page} onClick={() => onPageChange(page)}>
-                Page {page}
-            </PageButton>
+            <li key={page}>
+                <PageButton
+                    key={page}
+                    isCurrent={currentPage === page}
+                    pageNumber={page}
+                    onClick={() => onPageChange(page)}
+                >
+                    {page}
+                </PageButton>
+            </li>
         ));
     };
 
     return (
         <nav aria-label="Pagination">
+            <RecordsPerPageDropdown selectedOption={recordsPerPage} />
             <ul>
-                <RecordsPerPageDropdown selectedOption={recordsPerPage} />
-                <PageButton onClick={() => onPageChange(1)}>
-                    First Page
-                </PageButton>
-                <PageButton onClick={() => onPageChange(currentPage - 1)}>
-                    Previous Page
-                </PageButton>
-                {renderPages()}
-                <PageButton onClick={() => onPageChange(currentPage + 1)}>
-                    Next Page
-                </PageButton>
-                <PageButton onClick={() => onPageChange(totalPages)}>
-                    Last Page
-                </PageButton>
+                <li>
+                    <button
+                        type="button"
+                        aria-disabled={isFirstPage}
+                        onClick={() => handlePageChange(1)}
+                    >
+                        First Page
+                    </button>
+                </li>
+                <li>
+                    <button
+                        type="button"
+                        aria-disabled={isFirstPage}
+                        onClick={() => handlePageChange(currentPage - 1)}
+                    >
+                        Previous Page
+                    </button>
+                </li>
+                {renderPageButtons()}
+                <li>
+                    <button
+                        type="button"
+                        aria-disabled={isLastPage}
+                        onClick={() => handlePageChange(currentPage + 1)}
+                    >
+                        Next Page
+                    </button>
+                </li>
+                <li>
+                    <button
+                        type="button"
+                        aria-disabled={isLastPage}
+                        onClick={() => handlePageChange(totalPages)}
+                    >
+                        Last Page
+                    </button>
+                </li>
             </ul>
         </nav>
     );

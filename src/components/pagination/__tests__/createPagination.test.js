@@ -1,4 +1,4 @@
-import createPagination from "../pagination/createPagination";
+import createPagination from "../createPagination";
 
 test.each`
     totalPages | currentPage | range | expectedResult

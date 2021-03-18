@@ -1,13 +1,13 @@
 function createPagination({ totalPages, currentPage, range }) {
     const pageRange = Math.floor(range / 2);
     const firstPageInRange = Math.abs(currentPage - pageRange);
-    const lastPageInRange = firstPageInRange + range - 1;
+    const firstPage = firstPageInRange === 0 ? 1 : firstPageInRange;
+
+    const lastPageInRange = firstPage + range - 1;
     const firstPageOutOfRange = Math.abs(totalPages - range + 1);
 
     const startPage =
-        firstPageInRange + range > totalPages
-            ? firstPageOutOfRange
-            : firstPageInRange;
+        firstPage + range > totalPages ? firstPageOutOfRange : firstPage;
     const endPage = lastPageInRange > totalPages ? totalPages : lastPageInRange;
     const pages = [];
 
