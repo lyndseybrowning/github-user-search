@@ -14,9 +14,28 @@ describe("Pagination component", () => {
     it("should display a dropdown that allows the user to choose the number of records per page", () => {
         render(<Pagination {...defaultProps} />);
 
-        screen.getByRole("option", { name: /showing 10 records/i });
-        screen.getByRole("option", { name: /showing 20 records/i });
-        screen.getByRole("option", { name: /showing 50 records/i });
+        screen.getByRole("option", { name: /10 records per page/i });
+        screen.getByRole("option", { name: /20 records per page/i });
+        screen.getByRole("option", { name: /50 records per page/i });
+    });
+
+    it("should call the onRecordsPerPageChange handler when a new option is chosen", () => {
+        const mockOnRecordsPerPageChange = jest.fn();
+
+        render(
+            <Pagination
+                {...defaultProps}
+                onRecordsPerPageChange={mockOnRecordsPerPageChange}
+            />,
+        );
+
+        const dropdown = screen.getByRole("combobox", {
+            name: /choose display option/i,
+        });
+
+        fireEvent.change(dropdown, { target: { value: "20" } });
+
+        expect(mockOnRecordsPerPageChange).toHaveBeenCalledWith(20);
     });
 
     it("should display page buttons for each available page", () => {

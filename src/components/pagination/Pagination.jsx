@@ -11,6 +11,7 @@ const Pagination = ({
     currentPage,
     pageRange,
     onPageChange,
+    onRecordsPerPageChange,
 }) => {
     const pages = createPagination({
         totalPages,
@@ -45,7 +46,10 @@ const Pagination = ({
 
     return (
         <nav aria-label="Pagination">
-            <RecordsPerPageDropdown selectedOption={recordsPerPage} />
+            <RecordsPerPageDropdown
+                selectedOption={recordsPerPage}
+                onRecordsPerPageChange={onRecordsPerPageChange}
+            />
             <ul>
                 <li>
                     <button

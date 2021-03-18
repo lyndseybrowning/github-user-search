@@ -3,15 +3,21 @@ import PropTypes from "prop-types";
 
 const recordsPerPageOptions = [10, 20, 50];
 
-const RecordsPerPageDropdown = ({ selectedOption }) => {
+const RecordsPerPageDropdown = ({ selectedOption, onRecordsPerPageChange }) => {
     return (
-        <select>
-            {recordsPerPageOptions.map((option) => (
-                <option key={`option-${option}`} value={option.toString()}>
-                    Showing {option} records
-                </option>
-            ))}
-        </select>
+        <form>
+            <label htmlFor="recordsPerPage">Choose display option</label>
+            <select
+                id="recordsPerPage"
+                onChange={(e) => onRecordsPerPageChange(Number(e.target.value))}
+            >
+                {recordsPerPageOptions.map((option) => (
+                    <option key={`option-${option}`} value={option}>
+                        {option} records per page
+                    </option>
+                ))}
+            </select>
+        </form>
     );
 };
 
