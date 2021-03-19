@@ -51,6 +51,7 @@ const UsersTab = ({ users, recordsPerPage, searchQuery }) => {
     return (
         <Fragment>
             <Pagination
+                label="Primary Pagination"
                 totalPages={totalPages}
                 currentPage={currentPage}
                 recordsPerPage={pageSize}
@@ -63,6 +64,7 @@ const UsersTab = ({ users, recordsPerPage, searchQuery }) => {
                 ))}
             </ul>
             <Pagination
+                aria-label="Secondary Pagination"
                 totalPages={totalPages}
                 currentPage={currentPage}
                 recordsPerPage={pageSize}

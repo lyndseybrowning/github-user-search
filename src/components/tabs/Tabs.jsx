@@ -41,14 +41,14 @@ const Tabs = ({ children: tabs, label }) => {
     const renderTabList = () => {
         return React.Children.map(tabs, (tab, index) => {
             const isSelectedTab = selectedTabIndex === index;
-            const { name } = tab.props;
+            const { id } = tab.props;
             const setRef = (ref) => (tabRefs.current[index] = ref);
 
             return cloneElement(tab, {
-                "aria-controls": isSelectedTab ? `tab-panel-${name}` : null,
+                "aria-controls": isSelectedTab ? `tab-panel-${id}` : null,
                 "aria-selected": isSelectedTab,
                 className: "tabs__tab",
-                id: `tab-${name}`,
+                id: `tab-${id}`,
                 tabIndex: isSelectedTab ? 0 : -1,
                 ref: setRef,
                 onClick: () => setSelectedTabIndex(index),
@@ -66,8 +66,8 @@ const Tabs = ({ children: tabs, label }) => {
                 className="tabs__panel"
                 role="tabpanel"
                 tabIndex={0}
-                id={`tab-panel-${selectedTab.props.name}`}
-                aria-labelledby={`tab-${selectedTab.props.name}`}
+                id={`tab-panel-${selectedTab.props.id}`}
+                aria-labelledby={`tab-${selectedTab.props.id}`}
             >
                 {selectedTab.props.children}
             </div>

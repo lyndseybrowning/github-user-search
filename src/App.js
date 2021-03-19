@@ -106,14 +106,16 @@ function App() {
 
         return (
             <Tabs label="Search Results">
-                <Tab name={tabName} label={tabLabel}>
+                <Tab id="users" name={tabName} label={tabLabel}>
                     <UsersTab
                         users={state.users}
                         recordsPerPage={RECORDS_PER_PAGE}
                         searchQuery={state.searchQuery}
                     />
                 </Tab>
-                <Tab name="Repos">TODO</Tab>
+                <Tab id="repos" name="Repos">
+                    TODO
+                </Tab>
             </Tabs>
         );
     };

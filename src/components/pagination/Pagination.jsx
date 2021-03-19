@@ -6,6 +6,7 @@ import RecordsPerPageDropdown from "./RecordsPerPageDropdown";
 import PageButton from "./PageButton";
 
 const Pagination = ({
+    label,
     recordsPerPage,
     totalPages,
     currentPage,
@@ -55,7 +56,7 @@ const Pagination = ({
     };
 
     return (
-        <nav className="pagination" aria-label="Pagination">
+        <nav className="pagination" aria-label={label}>
             <RecordsPerPageDropdown
                 selectedOption={recordsPerPage}
                 onRecordsPerPageChange={onRecordsPerPageChange}
@@ -118,6 +119,7 @@ Pagination.defaultProps = {
 };
 
 Pagination.propTypes = {
+    label: PropTypes.string.isRequired,
     totalPages: PropTypes.number.isRequired,
     recordsPerPage: PropTypes.number,
     currentPage: PropTypes.number,

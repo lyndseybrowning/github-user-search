@@ -36,13 +36,10 @@ const User = ({ user }) => {
                 title={{ text: user.login, url: user.html_url }}
                 img={{ src: user.avatar_url }}
             >
-                <details
-                    aria-controls="profile-info"
-                    onToggle={(e) => setShowDetails(e.target.open)}
-                >
+                <details onToggle={(e) => setShowDetails(e.target.open)}>
                     <summary>Profile Info</summary>
                     {userData && (
-                        <div id="profile-info">
+                        <div>
                             <p className="u-emphasis">{userData.bio}</p>
                             <dl>
                                 <dt>Location</dt>
