@@ -14,4 +14,12 @@ async function fetchData(
     return data;
 }
 
+async function fetchUserData(userId) {
+    const response = await fetch(`https://api.github.com/user/${userId}`);
+    const data = await response.json();
+
+    return data;
+}
+
 export default fetchData;
+export { fetchUserData };

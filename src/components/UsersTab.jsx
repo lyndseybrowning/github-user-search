@@ -1,12 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import fetchData from "../scripts/fetchData";
-import PaginatedTabContent from "./PaginatedTabContent";
+import Pagination from "./pagination";
+import User from "./User";
+
+const MAX_TOTAL_RECORDS = 1000;
+const DEFAULT_CURRENT_PAGE = 1;
 
 const UsersTab = ({ users, recordsPerPage, searchQuery }) => {
+    const [currentPage, setCurrentPage] = useState(DEFAULT_CURRENT_PAGE);
     const [userData, setUserData] = useState(users);
-    const [currentPage, setCurrentPage] = useState(1);
+    const [pageSize, setPageSize] = useState(recordsPerPage);
+
+    const totalUserPages = Math.floor(userData.total_count / recordsPerPage);
+    const maxTotalPages = Math.floor(MAX_TOTAL_RECORDS / recordsPerPage);
+    const totalPages =
+        totalUserPages <= maxTotalPages ? totalUserPages : maxTotalPages;
 
     useEffect(() => {
         async function fetchNextPage() {
@@ -28,14 +38,20 @@ const UsersTab = ({ users, recordsPerPage, searchQuery }) => {
     }, [currentPage, searchQuery, recordsPerPage]);
 
     return (
-        <PaginatedTabContent
-            totalRecords={userData.total_count}
-            recordsPerPage={recordsPerPage}
-            currentPage={currentPage}
-            onPageChange={setCurrentPage}
-        >
-            TODO
-        </PaginatedTabContent>
+        <Fragment>
+            <Pagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                recordsPerPage={pageSize}
+                onPageChange={setCurrentPage}
+                onRecordsPerPageChange={setPageSize}
+            />
+            <ul>
+                {userData.items.map((user) => (
+                    <User key={user.id} user={user} />
+                ))}
+            </ul>
+        </Fragment>
     );
 };
 

@@ -1,4 +1,4 @@
-import fetchData from "../fetchData";
+import fetchData, { fetchUserData } from "../fetchData";
 
 const defaultFetch = global.fetch;
 
@@ -61,6 +61,20 @@ describe("fetchData", () => {
 
         expect(window.fetch).toHaveBeenCalledWith(
             "https://api.github.com/search/users?q=mock-query&per_page=10&page=1",
+        );
+    });
+});
+
+describe("fetchUserData", () => {
+    it("should call the user endpoint with the specified user Id", async () => {
+        const mockUserId = "594";
+
+        await fetchUserData(mockUserId);
+
+        expect(window.fetch).toHaveBeenCalledWith(
+            expect.stringContaining(
+                `https://api.github.com/user/${mockUserId}`,
+            ),
         );
     });
 });

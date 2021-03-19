@@ -46,21 +46,14 @@ function App() {
         try {
             dispatch({ type: "searchingResults" });
 
-            Promise.all([
-                await fetchData(searchQuery, {
-                    pageSize: RECORDS_PER_PAGE,
-                }),
-                await fetchData(searchQuery, {
-                    type: "repositories",
-                    pageSize: RECORDS_PER_PAGE,
-                }),
-            ]).then(([users, repositories]) => {
-                dispatch({
-                    type: "resultsFound",
-                    users,
-                    repositories,
-                    searchQuery,
-                });
+            const data = await fetchData(searchQuery, {
+                pageSize: RECORDS_PER_PAGE,
+            });
+
+            dispatch({
+                type: "resultsFound",
+                users: data,
+                searchQuery,
             });
         } catch (error) {
             dispatch({ type: "error", error });
@@ -76,6 +69,15 @@ function App() {
             return <p>Enter a search term to find results.</p>;
         }
 
+        if (state.error) {
+            return (
+                <p>
+                    Error fetching results. Please try again or wait for
+                    timeout.
+                </p>
+            );
+        }
+
         return (
             <Tabs label="Search Results">
                 <Tab name={`Users ${state.users.total_count}`}>
@@ -85,9 +87,7 @@ function App() {
                         searchQuery={state.searchQuery}
                     />
                 </Tab>
-                <Tab name={`Repos ${state.repositories.total_count}`}>
-                    Repos Tab Content
-                </Tab>
+                <Tab name="Repos">TODO</Tab>
             </Tabs>
         );
     };
