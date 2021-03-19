@@ -79,17 +79,12 @@ function App() {
             return <p>Loading results, please wait...</p>;
         }
 
-        if (state.users === null) {
-            return <p>Enter a search term to find results.</p>;
+        if (state.error) {
+            return <p>{state.error.message}</p>;
         }
 
-        if (state.error) {
-            return (
-                <p>
-                    Error fetching results. Please try again or wait for
-                    timeout.
-                </p>
-            );
+        if (state.users === null) {
+            return <p>Enter a search term to find results.</p>;
         }
 
         return (

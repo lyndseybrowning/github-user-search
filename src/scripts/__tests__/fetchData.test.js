@@ -22,7 +22,7 @@ describe("fetchData", () => {
             await fetchData();
         } catch (error) {
             /* eslint-disable-next-line jest/no-conditional-expect */
-            expect(error.message).toBe("searchQuery is required");
+            expect(error.message).toBe("searchQuery is required.");
         }
     });
 
@@ -63,6 +63,23 @@ describe("fetchData", () => {
             "https://api.github.com/search/users?q=mock-query&per_page=10&page=1",
         );
     });
+
+    it("should throw an error when the request returns a 403 to indicate request limit reached", async () => {
+        global.fetch.mockImplementation(() =>
+            Promise.resolve({
+                status: 403,
+            }),
+        );
+
+        try {
+            await fetchData("mock search query");
+        } catch (error) {
+            /* eslint-disable-next-line jest/no-conditional-expect */
+            expect(error.message).toBe(
+                "Request limit reached. Please try again in a few minutes.",
+            );
+        }
+    });
 });
 
 describe("fetchUserData", () => {
@@ -76,5 +93,22 @@ describe("fetchUserData", () => {
                 `https://api.github.com/user/${mockUserId}`,
             ),
         );
+    });
+
+    it("should throw an error when the request returns a 403 to indicate request limit reached", async () => {
+        global.fetch.mockImplementation(() =>
+            Promise.resolve({
+                status: 403,
+            }),
+        );
+
+        try {
+            await fetchUserData("mock user id");
+        } catch (error) {
+            /* eslint-disable-next-line jest/no-conditional-expect */
+            expect(error.message).toBe(
+                "Request limit reached. Please try again in a few minutes.",
+            );
+        }
     });
 });
