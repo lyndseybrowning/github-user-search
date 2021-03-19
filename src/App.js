@@ -76,15 +76,17 @@ function App() {
 
     const renderContent = () => {
         if (state.isLoading) {
-            return <p>Loading results, please wait...</p>;
+            return <p aria-live="polite">Loading results, please wait...</p>;
         }
 
         if (state.error) {
-            return <p>{state.error.message}</p>;
+            return <p aria-live="polite">{state.error.message}</p>;
         }
 
         if (state.users === null) {
-            return <p>Enter a search term to find results.</p>;
+            return (
+                <p aria-live="polite">Enter a search term to find results.</p>
+            );
         }
 
         const totalUsersFound = state.users.total_count;

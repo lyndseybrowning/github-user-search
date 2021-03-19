@@ -62,6 +62,13 @@ const UsersTab = ({ users, recordsPerPage, searchQuery }) => {
                     <User key={user.id} user={user} />
                 ))}
             </ul>
+            <Pagination
+                totalPages={totalPages}
+                currentPage={currentPage}
+                recordsPerPage={pageSize}
+                onPageChange={setCurrentPage}
+                onRecordsPerPageChange={setPageSize}
+            />
         </Fragment>
     );
 };
