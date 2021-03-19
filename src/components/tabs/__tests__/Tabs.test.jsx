@@ -42,6 +42,22 @@ describe("Tabs component", () => {
         expect(firstTabContent).not.toBeInTheDocument();
     });
 
+    it("should allow a custom label to be passed to the tab", () => {
+        const mockCustomLabel = "My Tab";
+
+        render(
+            <Tabs {...defaultProps}>
+                <Tab name="users" label={mockCustomLabel}>
+                    First tab content
+                </Tab>
+            </Tabs>,
+        );
+
+        const tab = screen.getByText("users");
+
+        expect(tab).toHaveAttribute("aria-label", mockCustomLabel);
+    });
+
     describe("Keyboard Navigation", () => {
         beforeEach(() => {
             render(

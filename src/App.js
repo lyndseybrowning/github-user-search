@@ -87,9 +87,13 @@ function App() {
             return <p>Enter a search term to find results.</p>;
         }
 
+        const totalUsersFound = state.users.total_count;
+        const tabName = `Users (${totalUsersFound})`;
+        const tabLabel = `Users. ${totalUsersFound} records found.`;
+
         return (
             <Tabs label="Search Results">
-                <Tab name={`Users ${state.users.total_count}`}>
+                <Tab name={tabName} label={tabLabel}>
                     <UsersTab
                         users={state.users}
                         recordsPerPage={RECORDS_PER_PAGE}

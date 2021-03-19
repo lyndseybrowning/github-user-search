@@ -76,7 +76,7 @@ const Tabs = ({ children: tabs, label }) => {
 };
 
 Tabs.propTypes = {
-    children: PropTypes.arrayOf(PropTypes.node).isRequired,
+    children: PropTypes.node.isRequired,
     label: PropTypes.string.isRequired,
 };
 
