@@ -1,8 +1,8 @@
-import React, { useEffect, useReducer } from "react";
+import React, { useEffect, useReducer, useState } from "react";
 import { ThemeProvider } from "styled-components";
 
 import GlobalStyle from "./GlobalStyle";
-import { lightTheme } from "./theme";
+import { lightTheme, darkTheme } from "./theme";
 import fetchData from "./scripts/fetchData";
 import Search from "./components/search";
 import Tabs, { Tab } from "./components/tabs";
@@ -42,6 +42,7 @@ const searchReducer = (state, action) => {
 };
 
 function App() {
+    const [theme, setTheme] = useState(lightTheme);
     const [state, dispatch] = useReducer(searchReducer, {
         users: null,
         repositories: null,
@@ -49,6 +50,7 @@ function App() {
         isLoading: false,
         searchQuery: null,
     });
+    const nextTheme = theme.name === "light" ? "dark" : "light";
 
     useEffect(() => {
         async function handleSearch() {
@@ -73,6 +75,15 @@ function App() {
             handleSearch();
         }
     }, [state.searchQuery]);
+
+    const toggleTheme = () => {
+        setTheme((prevTheme) => {
+            if (prevTheme.name === "light") {
+                return darkTheme;
+            }
+            return lightTheme;
+        });
+    };
 
     const renderContent = () => {
         if (state.isLoading) {
@@ -108,11 +119,14 @@ function App() {
     };
 
     return (
-        <ThemeProvider theme={lightTheme}>
+        <ThemeProvider theme={theme}>
             <GlobalStyle />
             <header className="page-header">
                 <div className="container">
                     <h1>Search GitHub API</h1>
+                    <button type="button" onClick={toggleTheme}>
+                        Switch to {nextTheme} mode.
+                    </button>
                 </div>
             </header>
             <main>
