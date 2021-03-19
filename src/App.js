@@ -1,5 +1,8 @@
-import React, { Fragment, useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
+import { ThemeProvider } from "styled-components";
 
+import GlobalStyle from "./GlobalStyle";
+import { lightTheme } from "./theme";
 import fetchData from "./scripts/fetchData";
 import Search from "./components/search";
 import Tabs, { Tab } from "./components/tabs";
@@ -28,6 +31,11 @@ const searchReducer = (state, action) => {
                 isLoading: false,
                 error: action.error,
             };
+        case "setSearchQuery":
+            return {
+                ...state,
+                searchQuery: action.searchQuery,
+            };
         default:
             return state;
     }
@@ -42,23 +50,29 @@ function App() {
         searchQuery: null,
     });
 
-    const handleSearch = async (searchQuery) => {
-        try {
-            dispatch({ type: "searchingResults" });
+    useEffect(() => {
+        async function handleSearch() {
+            try {
+                dispatch({ type: "searchingResults" });
 
-            const data = await fetchData(searchQuery, {
-                pageSize: RECORDS_PER_PAGE,
-            });
+                const data = await fetchData(state.searchQuery, {
+                    pageSize: RECORDS_PER_PAGE,
+                });
 
-            dispatch({
-                type: "resultsFound",
-                users: data,
-                searchQuery,
-            });
-        } catch (error) {
-            dispatch({ type: "error", error });
+                dispatch({
+                    type: "resultsFound",
+                    users: data,
+                    searchQuery: state.searchQuery,
+                });
+            } catch (error) {
+                dispatch({ type: "error", error });
+            }
         }
-    };
+
+        if (state.searchQuery) {
+            handleSearch();
+        }
+    }, [state.searchQuery]);
 
     const renderContent = () => {
         if (state.isLoading) {
@@ -93,15 +107,24 @@ function App() {
     };
 
     return (
-        <Fragment>
-            <header>
-                <h1>Search GitHub API</h1>
+        <ThemeProvider theme={lightTheme}>
+            <GlobalStyle />
+            <header className="page-header">
+                <div className="container">
+                    <h1>Search GitHub API</h1>
+                </div>
             </header>
             <main>
-                <Search onSearch={handleSearch} />
-                {renderContent()}
+                <div className="container">
+                    <Search
+                        onSearch={(searchQuery) =>
+                            dispatch({ type: "setSearchQuery", searchQuery })
+                        }
+                    />
+                    {renderContent()}
+                </div>
             </main>
-        </Fragment>
+        </ThemeProvider>
     );
 }
 

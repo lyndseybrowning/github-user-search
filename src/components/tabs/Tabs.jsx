@@ -47,6 +47,7 @@ const Tabs = ({ children: tabs, label }) => {
             return cloneElement(tab, {
                 "aria-controls": isSelectedTab ? `tab-panel-${name}` : null,
                 "aria-selected": isSelectedTab,
+                className: "tabs__tab",
                 id: `tab-${name}`,
                 tabIndex: isSelectedTab ? 0 : -1,
                 ref: setRef,
@@ -58,10 +59,11 @@ const Tabs = ({ children: tabs, label }) => {
 
     return (
         <div className="tabs">
-            <div role="tablist" aria-label={label}>
+            <div className="tabs__list" role="tablist" aria-label={label}>
                 {renderTabList()}
             </div>
             <div
+                className="tabs__panel"
                 role="tabpanel"
                 tabIndex={0}
                 id={`tab-panel-${selectedTab.props.name}`}

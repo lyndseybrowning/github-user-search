@@ -25,7 +25,7 @@ const User = ({ user }) => {
     }, [showDetails, userData, user.id]);
 
     return (
-        <li key={user.id}>
+        <li className="list__item" key={user.id}>
             {error && (
                 <p>
                     Unable to fetch user information. Please refresh and try
@@ -36,14 +36,21 @@ const User = ({ user }) => {
                 title={{ text: user.login, url: user.html_url }}
                 img={{ src: user.avatar_url }}
             >
-                <details onToggle={(e) => setShowDetails(e.target.open)}>
-                    <summary>Details</summary>
+                <details
+                    aria-controls="profile-info"
+                    onToggle={(e) => setShowDetails(e.target.open)}
+                >
+                    <summary>Profile Info</summary>
                     {userData && (
-                        <Fragment>
-                            {userData.bio}
-                            <p>Location: {userData.location}</p>
-                            <p>Followers: {userData.followers}</p>
-                        </Fragment>
+                        <div id="profile-info">
+                            <p className="u-emphasis">{userData.bio}</p>
+                            <dl>
+                                <dt>Location</dt>
+                                <dd>{userData.location || "Unknown"}</dd>
+                                <dt>Followers</dt>
+                                <dd>{userData.followers}</dd>
+                            </dl>
+                        </div>
                     )}
                 </details>
             </Card>

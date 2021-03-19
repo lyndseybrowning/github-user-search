@@ -15,9 +15,12 @@ const Search = ({ onSearch }) => {
     };
 
     return (
-        <form onSubmit={handleSearch}>
-            <label htmlFor="input-search">Search GitHub</label>
+        <form className="search" onSubmit={handleSearch}>
+            <label htmlFor="input-search" className="u-hide-visually">
+                Search GitHub
+            </label>
             <input
+                className="search__input"
                 type="text"
                 name="search"
                 id="input-search"
@@ -26,7 +29,11 @@ const Search = ({ onSearch }) => {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
             />
-            <button type="submit" aria-disabled={searchTerm === ""}>
+            <button
+                className="search__button"
+                type="submit"
+                aria-disabled={searchTerm === ""}
+            >
                 Search
             </button>
         </form>

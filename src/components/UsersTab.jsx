@@ -46,7 +46,7 @@ const UsersTab = ({ users, recordsPerPage, searchQuery }) => {
                 onPageChange={setCurrentPage}
                 onRecordsPerPageChange={setPageSize}
             />
-            <ul>
+            <ul className="list">
                 {userData.items.map((user) => (
                     <User key={user.id} user={user} />
                 ))}

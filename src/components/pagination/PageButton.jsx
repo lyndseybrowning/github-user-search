@@ -1,9 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-const PageButton = ({ children: text, isCurrent, pageNumber, onClick }) => {
+const PageButton = ({
+    className,
+    children: text,
+    isCurrent,
+    pageNumber,
+    onClick,
+}) => {
     return (
         <button
+            className={className}
             type="button"
             aria-label={`Go to page ${pageNumber}`}
             aria-current={isCurrent}
@@ -15,6 +22,7 @@ const PageButton = ({ children: text, isCurrent, pageNumber, onClick }) => {
 };
 
 PageButton.propTypes = {
+    className: PropTypes.string.isRequired,
     children: PropTypes.oneOfType([PropTypes.string, PropTypes.node])
         .isRequired,
     isCurrent: PropTypes.bool.isRequired,

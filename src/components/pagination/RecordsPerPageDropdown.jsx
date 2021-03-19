@@ -5,8 +5,10 @@ const recordsPerPageOptions = [10, 20, 50];
 
 const RecordsPerPageDropdown = ({ selectedOption, onRecordsPerPageChange }) => {
     return (
-        <form>
-            <label htmlFor="recordsPerPage">Choose display option</label>
+        <form className="pagination__dropdown">
+            <label htmlFor="recordsPerPage" className="u-hide-visually">
+                Choose display option
+            </label>
             <select
                 id="recordsPerPage"
                 value={selectedOption}

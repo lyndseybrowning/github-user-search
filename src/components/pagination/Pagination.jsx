@@ -30,29 +30,40 @@ const Pagination = ({
     };
 
     const renderPageButtons = () => {
-        return pages.map((page) => (
-            <li key={page}>
-                <PageButton
-                    key={page}
-                    isCurrent={currentPage === page}
-                    pageNumber={page}
-                    onClick={() => onPageChange(page)}
-                >
-                    {page}
-                </PageButton>
-            </li>
-        ));
+        return pages.map((page) => {
+            const isCurrentPage = currentPage === page;
+            const classNames = [
+                "pagination__button",
+                isCurrentPage ? "pagination__button--current" : null,
+            ];
+            const className = classNames.filter(Boolean).join(" ");
+
+            return (
+                <li key={page}>
+                    <PageButton
+                        className={className}
+                        key={page}
+                        isCurrent={isCurrentPage}
+                        pageNumber={page}
+                        onClick={() => onPageChange(page)}
+                    >
+                        {page}
+                    </PageButton>
+                </li>
+            );
+        });
     };
 
     return (
-        <nav aria-label="Pagination">
+        <nav className="pagination" aria-label="Pagination">
             <RecordsPerPageDropdown
                 selectedOption={recordsPerPage}
                 onRecordsPerPageChange={onRecordsPerPageChange}
             />
-            <ul>
+            <ul className="pagination__list">
                 <li>
                     <button
+                        className="pagination__button"
                         type="button"
                         aria-disabled={isFirstPage}
                         onClick={() => handlePageChange(1)}
@@ -62,25 +73,32 @@ const Pagination = ({
                 </li>
                 <li>
                     <button
+                        className="pagination__button"
                         type="button"
                         aria-disabled={isFirstPage}
                         onClick={() => handlePageChange(currentPage - 1)}
                     >
-                        Previous Page
+                        <span aria-hidden>&lt;</span>
+                        <span className="u-hide-visually">
+                            Go to previous page
+                        </span>
                     </button>
                 </li>
                 {renderPageButtons()}
                 <li>
                     <button
+                        className="pagination__button"
                         type="button"
                         aria-disabled={isLastPage}
                         onClick={() => handlePageChange(currentPage + 1)}
                     >
-                        Next Page
+                        <span aria-hidden>&gt;</span>
+                        <span className="u-hide-visually">Go to next page</span>
                     </button>
                 </li>
                 <li>
                     <button
+                        className="pagination__button"
                         type="button"
                         aria-disabled={isLastPage}
                         onClick={() => handlePageChange(totalPages)}
