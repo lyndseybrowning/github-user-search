@@ -9,6 +9,7 @@ const RecordsPerPageDropdown = ({ selectedOption, onRecordsPerPageChange }) => {
             <label htmlFor="recordsPerPage">Choose display option</label>
             <select
                 id="recordsPerPage"
+                value={selectedOption}
                 onChange={(e) => onRecordsPerPageChange(Number(e.target.value))}
             >
                 {recordsPerPageOptions.map((option) => (

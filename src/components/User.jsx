@@ -1,26 +1,28 @@
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import PropTypes from "prop-types";
 
 import { fetchUserData } from "../scripts/fetchData";
 import Card from "./card";
 
 const User = ({ user }) => {
-    const [userData, setUserData] = useState({});
+    const [userData, setUserData] = useState(null);
     const [error, setError] = useState(null);
+    const [showDetails, setShowDetails] = useState(false);
 
     useEffect(() => {
         async function getUserData() {
-            const data = await fetchUserData(user.id);
+            try {
+                const data = await fetchUserData(user.id);
 
-            setUserData(data);
+                setUserData(data);
+            } catch (err) {
+                setError(err);
+            }
         }
-
-        try {
+        if (showDetails && !userData) {
             getUserData();
-        } catch (err) {
-            setError(err);
         }
-    }, [user.id]);
+    }, [showDetails, userData, user.id]);
 
     return (
         <li key={user.id}>
@@ -32,11 +34,18 @@ const User = ({ user }) => {
             )}
             <Card
                 title={{ text: user.login, url: user.html_url }}
-                subtitle={userData.bio}
                 img={{ src: user.avatar_url }}
             >
-                <p>{userData.location}</p>
-                <p>Followers: {userData.followers}</p>
+                <details onToggle={(e) => setShowDetails(e.target.open)}>
+                    <summary>Details</summary>
+                    {userData && (
+                        <Fragment>
+                            {userData.bio}
+                            <p>Location: {userData.location}</p>
+                            <p>Followers: {userData.followers}</p>
+                        </Fragment>
+                    )}
+                </details>
             </Card>
         </li>
     );
