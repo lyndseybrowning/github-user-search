@@ -5,6 +5,9 @@ import fetchData from "../scripts/fetchData";
 import Pagination from "./pagination";
 import User from "./User";
 
+// GitHub API will never return more than 1000 records
+// so the total number of pages in the pagination needs to
+// factor this in
 const MAX_TOTAL_RECORDS = 1000;
 const DEFAULT_CURRENT_PAGE = 1;
 
@@ -13,8 +16,8 @@ const UsersTab = ({ users, recordsPerPage, searchQuery }) => {
     const [userData, setUserData] = useState(users);
     const [pageSize, setPageSize] = useState(recordsPerPage);
 
-    const totalUserPages = Math.floor(userData.total_count / recordsPerPage);
-    const maxTotalPages = Math.floor(MAX_TOTAL_RECORDS / recordsPerPage);
+    const totalUserPages = Math.floor(userData.total_count / pageSize);
+    const maxTotalPages = Math.floor(MAX_TOTAL_RECORDS / pageSize);
     const totalPages =
         totalUserPages <= maxTotalPages ? totalUserPages : maxTotalPages;
 
@@ -23,7 +26,7 @@ const UsersTab = ({ users, recordsPerPage, searchQuery }) => {
             try {
                 const data = await fetchData(searchQuery, {
                     type: "users",
-                    pageSize: recordsPerPage,
+                    pageSize,
                     currentPage,
                 });
 
@@ -35,7 +38,15 @@ const UsersTab = ({ users, recordsPerPage, searchQuery }) => {
         }
 
         fetchNextPage();
-    }, [currentPage, searchQuery, recordsPerPage]);
+    }, [currentPage, searchQuery, pageSize]);
+
+    useEffect(() => {
+        // reset current page back to 1 when the dropdown is changed
+        // because the total number of pages is recalculated
+        if (pageSize !== recordsPerPage) {
+            setCurrentPage(DEFAULT_CURRENT_PAGE);
+        }
+    }, [pageSize, recordsPerPage]);
 
     return (
         <Fragment>
