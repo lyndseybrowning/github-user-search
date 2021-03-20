@@ -9,12 +9,13 @@ import User from "./User";
 // so the total number of pages in the pagination needs to
 // factor this in
 const MAX_TOTAL_RECORDS = 1000;
-const DEFAULT_CURRENT_PAGE = 1;
+const DEFAULT_START_PAGE = 1;
 
-const UsersTab = ({ users, recordsPerPage, searchQuery }) => {
-    const [currentPage, setCurrentPage] = useState(DEFAULT_CURRENT_PAGE);
+const UsersTab = ({ users, recordsPerPage, searchQuery, startPage }) => {
+    const [currentPage, setCurrentPage] = useState(startPage);
     const [userData, setUserData] = useState(users);
     const [pageSize, setPageSize] = useState(recordsPerPage);
+    const [error, setError] = useState(null);
 
     const totalUserPages = Math.floor(userData.total_count / pageSize);
     const maxTotalPages = Math.floor(MAX_TOTAL_RECORDS / pageSize);
@@ -32,23 +33,29 @@ const UsersTab = ({ users, recordsPerPage, searchQuery }) => {
 
                 setUserData(data);
             } catch (error) {
-                // TODO: handle errors
-                console.log(error);
+                setError(error);
             }
         }
 
-        fetchNextPage();
-    }, [currentPage, searchQuery, pageSize]);
+        // the condition prevents the same fetch request being called
+        // multiple times on the initial render.
+        if (currentPage !== startPage) {
+            fetchNextPage();
+        }
+    }, [currentPage, searchQuery, pageSize, startPage]);
 
     useEffect(() => {
         // reset current page back to 1 when the dropdown is changed
-        // because the total number of pages is recalculated
+        // because the total number of pages is recalculated and the current page
+        // might be greater than the total maximum pages.
         if (pageSize !== recordsPerPage) {
-            setCurrentPage(DEFAULT_CURRENT_PAGE);
+            setCurrentPage(DEFAULT_START_PAGE);
         }
     }, [pageSize, recordsPerPage]);
 
-    return (
+    return error ? (
+        <p aria-live="polite">{error.message}</p>
+    ) : (
         <Fragment>
             <Pagination
                 label="Primary Pagination"
@@ -64,7 +71,7 @@ const UsersTab = ({ users, recordsPerPage, searchQuery }) => {
                 ))}
             </ul>
             <Pagination
-                aria-label="Secondary Pagination"
+                label="Secondary Pagination"
                 totalPages={totalPages}
                 currentPage={currentPage}
                 recordsPerPage={pageSize}
@@ -75,8 +82,13 @@ const UsersTab = ({ users, recordsPerPage, searchQuery }) => {
     );
 };
 
+UsersTab.defaultProps = {
+    startPage: DEFAULT_START_PAGE,
+};
+
 UsersTab.propTypes = {
     users: PropTypes.shape().isRequired,
+    startPage: PropTypes.number,
 };
 
 export default UsersTab;

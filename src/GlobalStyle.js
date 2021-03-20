@@ -123,13 +123,23 @@ const GlobalStyle = createGlobalStyle`
 
     .pagination {
         display: flex;
+        flex-wrap: wrap;
         justify-content: center;
-        align-items: center;
+        align-items: flex-start;
+        padding-top: 2rem;
+
+        &__list,
+        &__dropdown {
+            margin-bottom: 1rem;
+        }
 
         &__list {
+            margin: 0;
+
             li {
                 list-style: none;
                 display: inline-block;
+                margin-bottom: 1rem;
             }
         }
 

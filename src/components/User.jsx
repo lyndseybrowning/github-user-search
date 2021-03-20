@@ -34,9 +34,12 @@ const User = ({ user }) => {
             )}
             <Card
                 title={{ text: user.login, url: user.html_url }}
-                img={{ src: user.avatar_url }}
+                img={{ src: user.avatar_url, alt: user.login }}
             >
-                <details onToggle={(e) => setShowDetails(e.target.open)}>
+                <details
+                    data-testid={user.id}
+                    onToggle={(e) => setShowDetails(e.target.open)}
+                >
                     <summary>Profile Info</summary>
                     {userData && (
                         <div>
