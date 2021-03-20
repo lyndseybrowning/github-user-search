@@ -113,7 +113,17 @@ function App() {
                     />
                 </Tab>
                 <Tab id="repos" name="Repos">
-                    TODO
+                    <p>
+                        I didn't get to complete this feature but here's what I
+                        wanted to do.
+                    </p>
+                    <p>
+                        I wanted to have a "Show Repositories" button inside the
+                        &lt;User /&gt; component that would open and populate
+                        this tab programmatically. It would go away to the
+                        GitHub API to fetch a list of all public repositories
+                        owned by the selected user.
+                    </p>
                 </Tab>
             </Tabs>
         );

@@ -11,16 +11,24 @@ import User from "./User";
 const MAX_TOTAL_RECORDS = 1000;
 const DEFAULT_START_PAGE = 1;
 
+const calculateMaxTotalPages = (totalRecords, pageSize) => {
+    const numPagesFound = Math.floor(totalRecords / pageSize);
+    const maxPagesAllowed = Math.floor(MAX_TOTAL_RECORDS / pageSize);
+
+    if (numPagesFound <= maxPagesAllowed) {
+        return numPagesFound;
+    }
+
+    return maxPagesAllowed;
+};
+
 const UsersTab = ({ users, recordsPerPage, searchQuery, startPage }) => {
     const [currentPage, setCurrentPage] = useState(startPage);
     const [userData, setUserData] = useState(users);
     const [pageSize, setPageSize] = useState(recordsPerPage);
     const [error, setError] = useState(null);
 
-    const totalUserPages = Math.floor(userData.total_count / pageSize);
-    const maxTotalPages = Math.floor(MAX_TOTAL_RECORDS / pageSize);
-    const totalPages =
-        totalUserPages <= maxTotalPages ? totalUserPages : maxTotalPages;
+    const totalPages = calculateMaxTotalPages(userData.total_count, pageSize);
 
     useEffect(() => {
         async function fetchNextPage() {
