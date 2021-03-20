@@ -3,6 +3,7 @@ import { fireEvent, render, screen } from "@testing-library/react";
 import Pagination from "..";
 
 const defaultProps = {
+    label: "Pagination",
     totalPages: 10,
     recordsPerPage: 10,
     currentPage: 1,

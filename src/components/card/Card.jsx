@@ -4,13 +4,7 @@ import PropTypes from "prop-types";
 const Card = ({ title, subtitle, children, img }) => {
     return (
         <div className="card">
-            {img && (
-                <img
-                    className="card__image"
-                    src={img.src}
-                    alt={img.alt || ""}
-                />
-            )}
+            {img && <img className="card__image" src={img.src} alt={img.alt} />}
             <h2 className="card__title">
                 <a href={title.url} rel="nooopener noreferrer" target="_blank">
                     {title.text}

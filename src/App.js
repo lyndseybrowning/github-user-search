@@ -25,19 +25,18 @@ const searchReducer = (state, action) => {
                 ...state,
                 isLoading: true,
             };
-        case "error":
-            return {
-                ...state,
-                isLoading: false,
-                error: action.error,
-            };
         case "setSearchQuery":
             return {
                 ...state,
                 searchQuery: action.searchQuery,
             };
+        case "error":
         default:
-            return state;
+            return {
+                ...state,
+                isLoading: false,
+                error: action.error,
+            };
     }
 };
 
@@ -126,7 +125,11 @@ function App() {
             <header className="page-header">
                 <div className="container">
                     <h1>Search GitHub API</h1>
-                    <button type="button" onClick={toggleTheme}>
+                    <button
+                        type="button"
+                        data-testid="btn-switch-theme"
+                        onClick={toggleTheme}
+                    >
                         Switch to {nextTheme} mode.
                     </button>
                 </div>
