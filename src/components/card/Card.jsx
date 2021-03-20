@@ -6,7 +6,7 @@ const Card = ({ title, subtitle, children, img }) => {
         <div className="card">
             {img && <img className="card__image" src={img.src} alt={img.alt} />}
             <h2 className="card__title">
-                <a href={title.url} rel="nooopener noreferrer" target="_blank">
+                <a href={title.url} rel="noopener noreferrer" target="_blank">
                     {title.text}
                 </a>
             </h2>
