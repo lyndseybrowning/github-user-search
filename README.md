@@ -36,7 +36,7 @@ I chose this approach because I didn't want the whole app to re-render when chan
 
 The user tab makes a request to the API on its initial render and whenever the current page or current page size changes. The request on the initial render is always the same as the request made by the app, because it retrieves the search results for the first page. This meant I had two duplicate requests being made when the user tab is opened for the first time.
 
-I resolved the issue by making a comparison between the current page passed by the app component and the current page assumed by the user tab component. When they are equal I don't make the API request.
+I resolved the issue by making a comparison between the current page value and what it was on the previous render (using the usePrevious hook from https://usehooks.com/usePrevious/). If I had more time I'd have liked to address this issue as I don't feel like the solution is the correct one.
 
 ## Future Improvements
 

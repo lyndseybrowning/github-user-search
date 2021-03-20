@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import fetchData from "../scripts/fetchData";
 import Pagination from "./pagination";
+import usePrevious from "./usePrevious";
 import User from "./User";
 
 // GitHub API will never return more than 1000 records
@@ -22,12 +23,18 @@ const calculateMaxTotalPages = (totalRecords, pageSize) => {
     return maxPagesAllowed;
 };
 
-const UsersTab = ({ users, recordsPerPage, searchQuery, startPage }) => {
-    const [currentPage, setCurrentPage] = useState(startPage);
+const UsersTab = ({ users, recordsPerPage, searchQuery }) => {
+    const [currentPage, setCurrentPage] = useState(DEFAULT_START_PAGE);
     const [userData, setUserData] = useState(users);
     const [pageSize, setPageSize] = useState(recordsPerPage);
     const [error, setError] = useState(null);
 
+    const previousCurrentPage = usePrevious(currentPage);
+
+    // I didn't see any performance issue in having the calculation
+    // happen on every render. If the app was more complex or the total count
+    // was a lot larger (millions for example), we may see performance benefit in using
+    // useMemo here to only run the calculation again when total count or page size changes.
     const totalPages = calculateMaxTotalPages(userData.total_count, pageSize);
 
     useEffect(() => {
@@ -45,12 +52,12 @@ const UsersTab = ({ users, recordsPerPage, searchQuery, startPage }) => {
             }
         }
 
-        // the condition prevents the same fetch request being called
-        // multiple times on the initial render.
-        if (currentPage !== startPage) {
+        // this ensures we only fetch the next page when page is changed
+        // and not when the page is rendered
+        if (previousCurrentPage !== currentPage) {
             fetchNextPage();
         }
-    }, [currentPage, searchQuery, pageSize, startPage]);
+    }, [currentPage, searchQuery, pageSize, previousCurrentPage]);
 
     useEffect(() => {
         // reset current page back to 1 when the dropdown is changed
@@ -90,13 +97,8 @@ const UsersTab = ({ users, recordsPerPage, searchQuery, startPage }) => {
     );
 };
 
-UsersTab.defaultProps = {
-    startPage: DEFAULT_START_PAGE,
-};
-
 UsersTab.propTypes = {
     users: PropTypes.shape().isRequired,
-    startPage: PropTypes.number,
 };
 
 export default UsersTab;
