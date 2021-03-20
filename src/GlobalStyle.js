@@ -98,10 +98,6 @@ const GlobalStyle = createGlobalStyle`
         &__input {
             flex: 1;
         }
-
-        &__button {
-
-        }
     }
 
     .tabs {
@@ -184,7 +180,6 @@ const GlobalStyle = createGlobalStyle`
     .card {
         padding: 1rem;
         word-wrap: break-word;
-        border: 1px solid red;
         border-radius: .5rem;
         margin-bottom: 1rem;
         border: .1rem solid ${(props) => props.theme.outline};
